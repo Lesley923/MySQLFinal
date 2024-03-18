@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Pitterest!</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="pitterest-landingpage.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-md bg-light navbar-light ">
+                <h1><a class="navbar-brand" href="#">Pitterest</a></h1>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                    <div class="navbar-nav navbar-right">
+                        <a class="nav-link" href="/pitterest-dashboard.html">My Dashboard</a>
+                        <a class="nav-link" href="#">Sign In</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <article>
+        <div class="container-fluid">
+            <div class="jumbotron text-center">
+                <h2>What do you recommend today?</h2>
+                <p>Add anything that you recommend to Pittsburgher!</p>
+            </div>
+        </div>
+    </article>
+    <!-- Form for adding new data -->
+    <form id="add-data-form">
+        <input type="text" id="name" name="name" placeholder="Name" required>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <button type="submit">Add Data</button>
+    </form>
+
+    <div id="data-container">
+
+    </div>
+    <script src="pitterest-landingpage.js"></script>
+</body>
+
+</html>

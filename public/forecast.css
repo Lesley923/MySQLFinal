@@ -1,0 +1,49 @@
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #eef2f3; /* Light grey background */
+    color: #333; /* Dark grey text */
+}
+
+h1 {
+    text-align: center;
+    color: #0a5298; /* Dark blue color */
+}
+
+#forecast-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.forecast-period {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    width: calc(100% / 3 - 40px); /* Three cards per row with spacing */
+    box-sizing: border-box;
+}
+
+.forecast-period h3 {
+    margin-top: 0;
+    color: #106ba3; /* Light blue color */
+}
+
+.forecast-period img {
+    width: 100%; /* Make the image responsive */
+    max-width: 80px; /* But not too large */
+    height: auto;
+}
+
+@media (max-width: 600px) {
+    .forecast-period {
+        width: calc(100% - 40px); /* Full width on small screens */
+    }
+}
