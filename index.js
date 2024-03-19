@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 // Send HTML file at root route
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'pitterest-landingpage.html'));
+    res.sendFile(path.join(__dirname, 'public', 'forecast.html'));
 });
 
 // Serve static files from the "public" directory
