@@ -47,3 +47,9 @@ h1 {
         width: calc(100% - 40px); /* Full width on small screens */
     }
 }
+
+@media (max-width: 900px) {
+    .forecast-period {
+        width: calc(100% - 40px); /* Full width on small screens */
+    }
+}
