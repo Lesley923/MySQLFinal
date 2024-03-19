@@ -1,21 +1,36 @@
-const express = require('express');
-const { MongoClient } = require('mongodb');
-const path = require('path');
-// const fetch = require('node-fetch');
-require('dotenv').config();
+import express from 'express';
+import { MongoClient } from 'mongodb';
+import path from 'path';
+import dotenv from 'dotenv';
+dotenv.config();
+import { JSDOM } from 'jsdom';
+import * as d3 from 'd3';
 
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
+
+const { window } = new JSDOM();
+const { document } = (new JSDOM('')).window;
+global.document = document;
+
+// A simple example to create an SVG element with D3
+var body = d3.select(document).select('body');
+var svg = body.append('svg')
+              .attr('width', 500)
+              .attr('height', 500);
+
 // Send HTML file at root route
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'pitterest-landingpage.html'));
+    res.sendFile(path.join(__dirname, 'public', 'forecast.html'));
 });
 
-// Serve static files from the "public" directory
 app.use(express.static('public'));
 
-// Middleware
 app.use(express.json()); // for parsing application/json
 
 // MongoDB connection string
