@@ -1,7 +1,6 @@
 const express = require("express");
 const { MongoClient } = require("mongodb");
 const path = require("path");
-const fetch = require("node-fetch");
 require("dotenv").config();
 
 const app = express();
