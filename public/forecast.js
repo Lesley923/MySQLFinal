@@ -1,3 +1,4 @@
+// forecast.js
 document.addEventListener('DOMContentLoaded', function() {
     fetch('https://api.weather.gov/points/40.4445,-79.9530')
         .then(response => response.json())
@@ -7,9 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const forecastContainer = document.getElementById('forecast-container');
             forecastContainer.innerHTML = ''; // Clear existing forecast data
             
-            let temperatures = []; // Array to hold temperature values for visualization
-            
             forecastData.properties.periods.forEach(period => {
+                const formattedStartTime = formatDateTime(period.startTime); // Use the format function here
                 const periodDiv = document.createElement('div');
                 periodDiv.className = 'forecast-period';
                 periodDiv.innerHTML = `
@@ -18,38 +18,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         <img src="${period.icon}" alt="${period.shortForecast}" />
                     </div>
                     <p>${period.detailedForecast}</p>
+                    <p><strong>Start From:</strong> ${formattedStartTime}</p> <!-- Display formatted time -->
                     <p><strong>Temperature:</strong> ${period.temperature} ${period.temperatureUnit}</p>
                 `;
                 forecastContainer.appendChild(periodDiv);
-                
-                // Collect temperature data for D3 visualization
-                temperatures.push(period.temperature);
             });
-            
-            // After the forecast is displayed, create a visualization
-            createTemperatureChart(temperatures);
         })
         .catch(error => console.error('Error fetching forecast:', error));
 });
 
-function createTemperatureChart(temperatures) {
-    const svgWidth = 500, svgHeight = 300, barPadding = 5;
-    let barWidth = (svgWidth / temperatures.length);
-    
-    const svg = d3.select('#d3-visualization')
-                  .append('svg')
-                  .attr('width', svgWidth)
-                  .attr('height', svgHeight);
-    
-    svg.selectAll('rect')
-       .data(temperatures)
-       .enter()
-       .append('rect')
-       .attr('y', d => svgHeight - d)
-       .attr('height', d => d)
-       .attr('width', barWidth - barPadding)
-       .attr('transform', (d, i) => {
-           let translate = [barWidth * i, 0];
-           return `translate(${translate})`;
-       });
+function formatDateTime(isoString) {
+    const date = new Date(isoString);
+    return date.toISOString().replace('T', ' ').slice(0, 19);
 }
