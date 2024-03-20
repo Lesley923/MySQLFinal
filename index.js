@@ -37,6 +37,8 @@ async function connectToDatabase() {
 connectToDatabase();
 const dbName = "yourDatabaseName";
 const collectionName = "yourCollectionName";
+const weatherDB = "INFSCI2711";
+const weatherName = "WeatherData";
 
 // Define a route to insert data
 app.post('/insert', async (req, res) => {
@@ -64,6 +66,30 @@ app.get('/data', async (req, res) => {
         const result = await collection.find().sort({ _id: -1 }).toArray();
         res.json(result); // Since limit(1) will return an array with one item
     } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+//fetch weather from mongodb
+app.get('/weather', async (req, res) => {
+    const collection = client.db(weatherDB).collection(weatherName); // Make sure you have this line here
+    //add filter button
+    const zipCode = req.query.zip; // Get the ZIP code from query parameters
+    
+    let query = {};
+    if (zipCode) {
+        query["address"] = zipCode; // Filter by the ZIP code in the address field
+    }
+    //add filter button
+    
+    try {
+        //add filter button
+        const result = await collection.find(query).toArray();
+        
+        //const result = await collection.find().toArray(); // Convert cursor to an array
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error fetching from MongoDB:', error);
         res.status(500).send(error.message);
     }
 });
