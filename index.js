@@ -38,37 +38,10 @@ const collectionName = "yourCollectionName";
 const weatherDB = "INFSCI2711";
 const weatherName = "WeatherData";
 
-<<<<<<< HEAD
 //connect mongoDB via API
 const atlasAPIEndpoint = 'https://us-east-2.aws.data.mongodb-api.com/app/data-atbre/endpoint/data/v1';
 const atlasAPIKey = process.env.ATLAS_API_KEY;
 const clusterName = 'INFSCI2560';
-=======
-// Define a route to insert data
-app.post("/insert", async (req, res) => {
-  const collection = client.db(dbName).collection(collectionName);
-
-  try {
-    // Check if the email already exists
-    const existingUser = await collection.findOne({ email: req.body.email });
-    if (existingUser) {
-      // If email exists, send an error response
-      res.status(409).send({ message: "Email already exists" });
-    } else {
-      // If email doesn't exist, insert the new user
-      const result = await collection.insertOne(req.body);
-      res.status(201).send(result);
-    }
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
->>>>>>> main
-
-// Send HTML file at root route
-//app.get("/", (req, res) => {
-//  res.sendFile(path.join(__dirname, "index.html"));
-//});
 
 app.get("/data", async (req, res) => {
   const collection = client.db(dbName).collection(collectionName); // Make sure you have this line here
@@ -80,7 +53,7 @@ app.get("/data", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
+
 //fetch weather from mongodb
 app.get('/weather', async (req, res) => {
     const collection = client.db(weatherDB).collection(weatherName); // Make sure you have this line here
@@ -105,18 +78,11 @@ app.get('/weather', async (req, res) => {
     }
 });
 
-=======
+
 // Other routes and middleware...
 app.get("/forecast", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "forecast.html"));
 });
-
-//Atlas API settings
-const atlasAPIEndpoint =
-  "https://us-east-2.aws.data.mongodb-api.com/app/data-atbre/endpoint/data/v1";
-const atlasAPIKey = process.env.ATLAS_API_KEY;
-const clusterName = "INFSCI2560";
->>>>>>> main
 
 app.get("/api.data", async (req, res) => {
   const headers = {
@@ -147,71 +113,11 @@ app.get("/api.data", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 // Other routes and middleware...
 app.get('/forecast', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'forecast.html'));
 });
 
-// Listen to port...
-=======
-app.post("/add-data", async (req, res) => {
-    //const insertData = req.body; // Data sent from the frontend to be added
-    const { email, ...newData } = req.body; // Destructure the email from the body
-
-    // First, check if the email already exists
-    const findRequestOptions = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'api-key': atlasAPIKey,
-        },
-        body: JSON.stringify({
-            dataSource: clusterName,
-            database: dbName,
-            collection: collectionName,
-            filter: { email }, // Filter to check if the email exists
-        }),
-    };
-
-    // The elements which need to send the request to API
-    const requestOptions = {
-        method: 'POST',
-        headers: findRequestOptions.headers,
-        body: JSON.stringify({
-            dataSource: clusterName,
-            database: dbName,
-            collection: collectionName,
-            document: { email, ...newData }, // The new data to insert
-        }),
-    };
-
-    try {
-        // Attempt to find an existing document with the same email
-        const findResponse = await fetch(atlasAPIEndpoint + '/action/findOne', findRequestOptions);
-        const findResult = await findResponse.json();
-
-        // If a document with the email exists, return an error response
-        if (findResult.document) {
-            return res.status(409).json({ message: 'Email already exists' });
-        }
-
-        const endPointFunction = '/action/insertOne'
-        const response = await fetch(atlasAPIEndpoint + endPointFunction, requestOptions);
-        const result = await response.json();
-
-        if (response.ok) {
-            res.status(200).json(result);
-        } else {
-            res.status(response.status).json(result);
-        }
-    } catch (error) {
-        console.error('Error adding data to MongoDB Atlas:', error);
-        res.status(500).send('Error adding data');
-    }
-});
-
->>>>>>> main
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
