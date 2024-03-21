@@ -1,3 +1,4 @@
+// forecast.js
 document.addEventListener('DOMContentLoaded', function() {     
     //add city filter button
     const loadWeatherButton = document.getElementById('load-weather');
