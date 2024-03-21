@@ -108,6 +108,24 @@ h1 {
     height: auto;
 }
 
+#temp-bar-chart rect {
+    transition: fill 0.3s ease;
+}
+
+#temp-bar-chart rect:hover {
+    fill: darkblue;
+}
+
+#temp-bar-chart text {
+    font-family: 'Arial', sans-serif;
+    fill: #333;
+}
+
+#temp-bar-chart line {
+    stroke: #333;
+    stroke-width: 1;
+}
+
 @media (max-width: 600px) {
     .forecast-period {
         width: calc(100% - 40px); /* Full width on small screens */
