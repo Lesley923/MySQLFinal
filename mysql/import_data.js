@@ -14,21 +14,21 @@ async function processFiles () {
     { format: 'Importing {file} [{bar}] {percentage}% | {value}/{total} | Resolved: {resolved} | Errors: {errors}' },
     cliProgress.Presets.shades_classic
   )
-  await Promise.all(dataFilePaths.map(async (dataFilePath) => {
+  for (const dataFilePath of dataFilePaths) {
     const transforms = getTransforms(dataFilePath)
     await pipeline(
       createReadStream(dataFilePath, { encoding: 'utf-8' }),
       ...transforms,
       importData(multibar, dataFilePath)
     )
-  }))
+  }
   multibar.stop()
 }
 
 async function main () {
   try {
     await ensureTablesExist(dbTablesMaps)
-    // await linkTables()
+    await linkTables()
     await processFiles()
   } catch (error) {
     console.error(error)

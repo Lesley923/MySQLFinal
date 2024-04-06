@@ -39,8 +39,9 @@ const importData = (multibar, filePath) => {
   }
 }
 const linkTables = async () => {
-  const sql = await readFile(path.join(sqlRoot, 'alters.sql'), { flag: 'r', encoding: 'utf-8' })
-  await pool.execute(sql)
+  const sqls = await readFile(path.join(sqlRoot, 'alters.sql'), { flag: 'r', encoding: 'utf-8' })
+  const sqlStatements = sqls.split(';').filter(sql => sql.trim() !== '')
+  await Promise.all(sqlStatements.map(sql => pool.execute(sql)))
 }
 /**
  *

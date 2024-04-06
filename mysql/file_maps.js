@@ -4,8 +4,8 @@ const { locationTransform, adjacencyTransform } = require('./transforms')
 
 const dataRoot = path.join(path.dirname(__dirname), 'data')
 const fileTransforms = {
-  'adjacency_pairs.csv': [csv(), adjacencyTransform],
-  'camping.csv': [csv(), locationTransform]
+  'camping.csv': [csv(), locationTransform],
+  'adjacency_pairs.csv': [csv(), adjacencyTransform]
   // "combined_forecasts.json": processWeather
 }
 function getTransforms (filePath) {
