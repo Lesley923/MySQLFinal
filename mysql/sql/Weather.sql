@@ -21,6 +21,6 @@ CREATE TABLE weather_fact (
     conditions VARCHAR(255) NOT NULL,
     icon VARCHAR(50),
     stations VARCHAR(255),
-    CONSTRAINT fk_weather_date FOREIGN KEY (date_key) REFERENCES date_dimension(date_key),
-    CONSTRAINT fk_weather_wind FOREIGN KEY (wind_key) REFERENCES wind_dimension(wind_key)
+    CONSTRAINT fk_weather_date FOREIGN KEY (date_key) REFERENCES date(date_key),
+    CONSTRAINT fk_weather_wind FOREIGN KEY (wind_key) REFERENCES wind(wind_key)
 );
