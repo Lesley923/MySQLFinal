@@ -1,8 +1,7 @@
-CREATE TABLE Precipitation (
+CREATE TABLE precipitation (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
-  `name` VARCHAR(50),
-  `datetime` DATETIME,
   `precip` FLOAT,
   `precipprob` INT,
+  `precipcover` FLOAT,
   `preciptype` VARCHAR(50)
 );

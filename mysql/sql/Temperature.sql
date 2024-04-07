@@ -1,9 +1,8 @@
-CREATE TABLE Temperature (
+CREATE TABLE temperature (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
-  `name` VARCHAR(50),
-  `datetime` datetime,
   `maxtemp` FLOAT,
   `mintemp` FLOAT,
+  `temp` FLOAT,
   `feelslikemax` FLOAT,
   `feelslikemin` FLOAT
 );

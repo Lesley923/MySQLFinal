@@ -3,7 +3,7 @@ module.exports = {
   adjacencyTransform: new Transform({
     objectMode: true,
     transform (chunk, encoding, callback) {
-      const sql = 'INSERT INTO AdjacencyRegions (zip_code, adj_zip_code) VALUES (?, ?)'
+      const sql = 'INSERT INTO adjacency_regions (zip_code, adj_zip_code) VALUES (?, ?)'
       const values = [
         chunk.ZipCode,
         chunk.AdjacentZipCode
@@ -14,7 +14,7 @@ module.exports = {
   locationTransform: new Transform({
     objectMode: true,
     transform (chunk, encoding, callback) {
-      const sql = 'INSERT INTO Locations (name, address, zip_code, latitude, longitude) VALUES (?, ?, ?, ?, ?)'
+      const sql = 'INSERT INTO location (name, address, zip_code, latitude, longitude) VALUES (?, ?, ?, ?, ?)'
       const values = [
         chunk.Name,
         chunk.Address,
@@ -25,7 +25,10 @@ module.exports = {
       callback(null, [sql, values])
     }
   }),
-  weatherTransform: async function () {
+  weatherTransform: new Transform({
+    objectMode: true,
+    transform (chunk, encoding, callback) {
 
-  }
+    }
+  })
 }

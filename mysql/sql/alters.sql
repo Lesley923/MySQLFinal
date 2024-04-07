@@ -1,6 +1,6 @@
-ALTER TABLE `Locations`
+ALTER TABLE `location`
 ADD INDEX `zip_code_index` (`zip_code`);
-ALTER TABLE `AdjacencyRegions`
+ALTER TABLE `adjacency_regions`
 ADD INDEX `zip_code_index` (`zip_code`);
-ALTER TABLE `AdjacencyRegions`
-ADD FOREIGN KEY (`zip_code`) REFERENCES `Locations` (`zip_code`);
+ALTER TABLE `adjacency_regions`
+ADD FOREIGN KEY (`zip_code`) REFERENCES `location` (`zip_code`);

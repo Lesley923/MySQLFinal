@@ -6,8 +6,13 @@ const { pool } = require('./db')
 const cliProgress = require('cli-progress')
 
 const dbTablesMaps = {
-  Locations: 'Locations.sql',
-  AdjacencyRegions: 'AdjacencyRegions.sql'
+  location: 'Location.sql',
+  adjacency_region: 'AdjacencyRegion.sql',
+  date: 'Date.sql',
+  humidity: 'Humidity.sql',
+  precipitation: 'Precipitation.sql',
+  temperature: 'Temperature.sql',
+  wind: 'Wind.sql'
 }
 async function processFiles () {
   const multibar = new cliProgress.MultiBar(

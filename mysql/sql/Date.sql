@@ -1,5 +1,5 @@
 CREATE TABLE date (
-    date_key INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     date DATE NOT NULL,
     day_of_week VARCHAR(9) NOT NULL,
     week_of_year INT NOT NULL,
