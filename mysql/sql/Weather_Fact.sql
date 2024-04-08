@@ -5,5 +5,7 @@ CREATE TABLE weather_fact (
     temperature_id INT,
     humidity_id INT,
     precipitation_id INT,
-    location_id INT
+    location_id INT,
+    visibility FLOAT,
+    cloudcover FLOAT
 );

@@ -62,7 +62,7 @@ module.exports = {
         chunk.sunset
       ]
 
-      const factSql = 'INSERT INTO weather_fact (date_id, wind_id, temperature_id, humidity_id, precipitation_id, location_id) VALUES (?, ?, ?, ?, ?, ?)'
+      const factSql = 'INSERT INTO weather_fact (date_id, wind_id, temperature_id, humidity_id, precipitation_id, location_id, visibility, cloudcover) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
       const zipCode = chunk.name.split(',')[0]
       const [zipResult] = await pool.execute(`SELECT id FROM location WHERE zip_code = ${zipCode}`)
       const factValues = [
@@ -71,7 +71,9 @@ module.exports = {
         rowIdx,
         rowIdx,
         rowIdx,
-        zipResult[0].id
+        zipResult[0].id,
+        parseFloat(chunk.visibility),
+        parseFloat(chunk.cloudcover)
       ]
       rowIdx += 1
       callback(null, [[windSql, temperatureSql, percipitationSql, humiditySql, dateSql, factSql], [windValues, temperatureValues, precipitationValues, humidityValues, dateValues, factValues]])
