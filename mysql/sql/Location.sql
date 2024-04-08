@@ -1,4 +1,4 @@
-CREATE TABLE `Locations` (
+CREATE TABLE `location` (
   `id` int AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(50),
   `address` varchar(100),

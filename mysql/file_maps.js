@@ -1,12 +1,12 @@
 const csv = require('csv-parser')
 const path = require('path')
-const { locationTransform, adjacencyTransform } = require('./transforms')
+const { locationTransform, adjacencyTransform, weatherTransform } = require('./transforms')
 
 const dataRoot = path.join(path.dirname(__dirname), 'data')
 const fileTransforms = {
+  'camping.csv': [csv(), locationTransform],
   'adjacency_pairs.csv': [csv(), adjacencyTransform],
-  'camping.csv': [csv(), locationTransform]
-  // "combined_forecasts.json": processWeather
+  'combined_forecasts.csv': [csv(), weatherTransform]
 }
 function getTransforms (filePath) {
   return fileTransforms[path.basename(filePath)]

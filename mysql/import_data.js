@@ -6,30 +6,36 @@ const { pool } = require('./db')
 const cliProgress = require('cli-progress')
 
 const dbTablesMaps = {
-  Locations: 'Locations.sql',
-  AdjacencyRegions: 'AdjacencyRegions.sql'
+  location: 'Location.sql',
+  adjacency_region: 'AdjacencyRegion.sql',
+  date: 'Date.sql',
+  humidity: 'Humidity.sql',
+  precipitation: 'Precipitation.sql',
+  temperature: 'Temperature.sql',
+  wind: 'Wind.sql',
+  weather_fact: 'Weather_Fact.sql'
 }
 async function processFiles () {
   const multibar = new cliProgress.MultiBar(
     { format: 'Importing {file} [{bar}] {percentage}% | {value}/{total} | Resolved: {resolved} | Errors: {errors}' },
     cliProgress.Presets.shades_classic
   )
-  await Promise.all(dataFilePaths.map(async (dataFilePath) => {
+  for (const dataFilePath of dataFilePaths) {
     const transforms = getTransforms(dataFilePath)
     await pipeline(
       createReadStream(dataFilePath, { encoding: 'utf-8' }),
       ...transforms,
       importData(multibar, dataFilePath)
     )
-  }))
+  }
   multibar.stop()
 }
 
 async function main () {
   try {
     await ensureTablesExist(dbTablesMaps)
-    // await linkTables()
     await processFiles()
+    await linkTables()
   } catch (error) {
     console.error(error)
   } finally {
