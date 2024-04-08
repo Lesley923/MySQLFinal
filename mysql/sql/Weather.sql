@@ -2,13 +2,10 @@ CREATE TABLE weather_fact (
     weather_id INT AUTO_INCREMENT PRIMARY KEY,
     date_key INT NOT NULL,
     wind_key INT NOT NULL,
+    zipcode varchar(10) NOT NULL,
+    humidity_key INT NOT NULL,
     temp DECIMAL(5, 2) NOT NULL,
     feelslike DECIMAL(5, 2) NOT NULL,
-    dew DECIMAL(5, 2) NOT NULL,
-    humidity DECIMAL(5, 2) NOT NULL,
-    precip DECIMAL(5, 2) NOT NULL,
-    precipprob INT NOT NULL,
-    preciptype VARCHAR(50),
     snow DECIMAL(5, 2) NOT NULL,
     snowdepth DECIMAL(5, 2) NOT NULL,
     sealevelpressure DECIMAL(6, 2) NOT NULL,
@@ -22,5 +19,7 @@ CREATE TABLE weather_fact (
     icon VARCHAR(50),
     stations VARCHAR(255),
     CONSTRAINT fk_weather_date FOREIGN KEY (date_key) REFERENCES date(date_key),
-    CONSTRAINT fk_weather_wind FOREIGN KEY (wind_key) REFERENCES wind(wind_key)
+    CONSTRAINT fk_weather_humidity FOREIGN KEY (humidity_key) REFERENCES Humidity(id),
+    CONSTRAINT fk_weather_wind FOREIGN KEY (wind_key) REFERENCES wind(wind_key),
+    CONSTRAINT fk_weather_zipcode FOREIGN KEY (zipcode) REFERENCES Locations(zip_code)
 );
