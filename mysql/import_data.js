@@ -12,7 +12,8 @@ const dbTablesMaps = {
   humidity: 'Humidity.sql',
   precipitation: 'Precipitation.sql',
   temperature: 'Temperature.sql',
-  wind: 'Wind.sql'
+  wind: 'Wind.sql',
+  weather_fact: 'Weather_Fact.sql'
 }
 async function processFiles () {
   const multibar = new cliProgress.MultiBar(
@@ -33,8 +34,8 @@ async function processFiles () {
 async function main () {
   try {
     await ensureTablesExist(dbTablesMaps)
-    await linkTables()
     await processFiles()
+    await linkTables()
   } catch (error) {
     console.error(error)
   } finally {

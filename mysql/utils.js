@@ -15,17 +15,23 @@ const importData = (multibar, filePath) => {
   const bar = multibar.create(queries.length, barStatus.errors + barStatus.resolved, barStatus)
   return (stream) => {
     stream.on('data', (chunk) => {
-      const [sql, values] = chunk
-      queries.push(
-        pool.execute(sql, values)
-          .then(() => bar.update(null, { resolved: ++barStatus.resolved }))
-          .catch((err) => {
-            console.error(err)
-            bar.update(null, { errors: ++barStatus.errors })
-          })
-          .finally(() => bar.increment())
-      )
-      bar.setTotal(queries.length)
+      const [sqls, values] = chunk
+      for (let i = 0; i < sqls.length; i++) {
+        const sql = sqls[i]
+        const value = values[i]
+        queries.push(
+          pool.execute(sql, value)
+            .then(() => bar.update(null, { resolved: ++barStatus.resolved }))
+            .catch((err) => {
+              console.error(err)
+              console.log(sql)
+              console.log(value)
+              bar.update(null, { errors: ++barStatus.errors })
+            })
+            .finally(() => bar.increment())
+        )
+        bar.setTotal(queries.length)
+      }
     })
     stream.on('error', (error) => {
       throw error

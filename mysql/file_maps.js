@@ -6,7 +6,7 @@ const dataRoot = path.join(path.dirname(__dirname), 'data')
 const fileTransforms = {
   'camping.csv': [csv(), locationTransform],
   'adjacency_pairs.csv': [csv(), adjacencyTransform],
-  'combined_forecasts.json': [weatherTransform]
+  'combined_forecasts.csv': [csv(), weatherTransform]
 }
 function getTransforms (filePath) {
   return fileTransforms[path.basename(filePath)]
