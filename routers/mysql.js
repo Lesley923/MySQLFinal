@@ -29,6 +29,24 @@ router.get('/advice', async (req, res) => {
       const [results1] = await pool.execute(sql1, [zipcode, date]);
       const [results2] = await pool.execute(sql2, [zipcode, date]);
       const [results3] = await pool.execute(sql3, [zipcode, date]);
+      results1.forEach(result => {
+        if (result.date instanceof Date) {
+            // Format the date as a YYYY-MM-DD string
+            result.date = result.date.toISOString().split('T')[0];
+        }
+      });
+      results2.forEach(result => {
+      if (result.date instanceof Date) {
+          // Format the date as a YYYY-MM-DD string
+          result.date = result.date.toISOString().split('T')[0];
+      }
+      });
+      results3.forEach(result => {
+        if (result.date instanceof Date) {
+            // Format the date as a YYYY-MM-DD string
+            result.date = result.date.toISOString().split('T')[0];
+        }
+    });
       if (results1.length === 0) {
           return res.status(404).json({ message: "No sunrise data found." });
       }
@@ -42,6 +60,33 @@ router.get('/advice', async (req, res) => {
   } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Error fetching forecast data." });
+  }
+});
+
+router.get('/meteoradvice', async (req, res) => {
+  const { date } = req.query;
+
+  if (!date) {
+    return res.status(400).json({ message: "Please provide a date parameter in the format YYYY-MM-DD." });
+  }
+
+  try {
+
+    const sqlFilePath = path.join(__dirname, '..', 'mysql', 'sql','Q3.sql'); 
+    const sqlQuery = await fs.readFile(sqlFilePath, 'utf8');
+
+
+    const [results] = await pool.execute(sqlQuery, [date,date]); 
+    results.forEach(result => {
+      if (result.date instanceof Date) {
+          // Format the date as a YYYY-MM-DD string
+          result.date = result.date.toISOString().split('T')[0];
+      }
+  });
+    res.json(results);
+  } catch (err) {
+    console.error('Error executing query:', err);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
