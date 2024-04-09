@@ -1,7 +1,6 @@
 SELECT 
     d.date,
     d.sunrise,
-    AVG(wf.cloudcover) AS average_cloud_cover,
     AVG(wf.visibility) AS average_visibility,
     CASE
         WHEN AVG(wf.visibility) > 20 THEN 'Excellent'
@@ -10,6 +9,7 @@ SELECT
         WHEN AVG(wf.visibility) BETWEEN 1 AND 4 THEN 'Poor'
         ELSE 'Very Poor'
     END AS visibility_category,
+    AVG(wf.cloudcover) AS average_cloud_cover,
     CASE
         WHEN AVG(wf.cloudcover) BETWEEN 0 AND 10 THEN 'Clear Skies'
         WHEN AVG(wf.cloudcover) BETWEEN 10 AND 30 THEN 'Mostly Clear'

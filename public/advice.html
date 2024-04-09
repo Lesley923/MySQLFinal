@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Forecast</title>
+    <link rel="stylesheet" href="advice.css">
 </head>
 <body>
     <h1>Check Weather Forecast</h1>
@@ -22,10 +23,10 @@
     <script>
         document.getElementById('forecastForm').addEventListener('submit', function(event) {
             event.preventDefault();
-
+        
             const zipcode = document.getElementById('zipcode').value;
             const date = document.getElementById('date').value;
-
+        
             fetch(`/mysql/advice?zipcode=${zipcode}&date=${date}`)
                 .then(response => {
                     if (!response.ok) {
@@ -35,13 +36,50 @@
                 })
                 .then(data => {
                     const resultsDiv = document.getElementById('forecastResults');
-                    resultsDiv.innerHTML = JSON.stringify(data, null, 2); // Displaying the JSON response
+                    resultsDiv.innerHTML = ''; 
+                    const readableNames = {
+                        "date": "Date",
+                        "sunrise": "Sunrise",
+                        "sunset": "Sunset",
+                        "average_cloud_cover": "Cloud Cover",
+                        "cloud_cover_category": "Cloud Cover Category",
+                        "average_visibility": "Visibility",
+                        "visibility_category": "Visibility Category",
+    
+                        "watching_possibility": "Watching Possibility",
+                        "average_feels_like": "Feels Like",
+                        "max_wind_gust": "Max Wind Gust",
+                        "feels_like_category": "Feels Like Category",
+                        "wind_gust_category": "Wind Gust Category"
+                    };
+        
+
+                    const createListFromResults = (result, title) => {
+                        const header = document.createElement('h3');
+                        header.textContent = title;
+                        resultsDiv.appendChild(header);
+        
+                        const list = document.createElement('ul');
+                        Object.entries(result).forEach(([key, value]) => {
+                            const listItem = document.createElement('li');
+                            const readableKey = readableNames[key] || key; 
+                            listItem.textContent = `${readableKey}: ${value}`;
+                            list.appendChild(listItem);
+                        });
+                        resultsDiv.appendChild(list);
+                    };
+                    if (data.results1) createListFromResults(data.results1[0], 'Sunrise Viewing Advice');
+                    if (data.results2) createListFromResults(data.results2[0], 'Sunset Viewing Advice');
+                    if (data.results3) createListFromResults(data.results3[0], 'Outdoor Activity Advice');
                 })
                 .catch(error => {
                     console.error('Error fetching forecast data:', error);
                     document.getElementById('forecastResults').innerHTML = `<p>Error: ${error.message}</p>`;
                 });
         });
-    </script>
+        </script>
+        
+        
+    
 </body>
 </html>

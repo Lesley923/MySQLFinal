@@ -4,15 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meteor Shower Advice</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        #results {
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="advice.css"> <!-- Link to the shared CSS file -->
 </head>
 <body>
     <h1>Meteor Shower Observation Advice</h1>
@@ -26,7 +18,7 @@
 
     <script>
         document.getElementById('adviceForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the form from submitting in the traditional way
+            event.preventDefault(); 
 
             const date = document.getElementById('dateInput').value;
             fetch(`/mysql/meteoradvice?date=${date}`)
@@ -37,14 +29,17 @@
                     return response.json();
                 })
                 .then(data => {
-                    // Assuming 'data' is an object or array that you want to display
                     const resultsDiv = document.getElementById('results');
-                    // Clear previous results
-                    resultsDiv.innerHTML = '';
-                    // Create and append a preformatted text element to display the response
-                    const pre = document.createElement('pre');
-                    pre.textContent = JSON.stringify(data, null, 2);
-                    resultsDiv.appendChild(pre);
+                    resultsDiv.innerHTML = ''; 
+                    const result = data[0];
+                    const list = document.createElement('ul');
+                    Object.entries(result).forEach(([key, value]) => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${key}: ${value}`;
+                        list.appendChild(listItem);
+                    });
+
+                    resultsDiv.appendChild(list);
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
