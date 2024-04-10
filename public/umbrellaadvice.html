@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umbrella Advice</title>
+    <link rel="stylesheet" href="advice.css">
+</head>
+<body>
+    <h1>Umbrella Usage Advice</h1>
+    <form id="adviceForm">
+        <label for="zipcodeInput">Enter your Zipcode:</label>
+        <input type="text" id="zipcodeInput" name="zipcode" required pattern="[0-9]*" minlength="5" maxlength="5">
+
+        <label for="dateInput">Select a Date:</label>
+        <input type="date" id="dateInput" name="date" required>
+
+        <button type="submit">Get Advice</button>
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('adviceForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const zipcode = document.getElementById('zipcodeInput').value;
+            const date = document.getElementById('dateInput').value;
+            fetch(`/mysql/umbrellaadvice?zipcode=${zipcode}&date=${date}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = '';
+
+                    data.forEach(advice => {
+                        const adviceCard = document.createElement('div');
+                        adviceCard.className = 'advice-card';
+
+                        const datePara = document.createElement('p');
+                        datePara.textContent = `Date: ${advice.Date}`;
+
+                        const morningAdvice = document.createElement('p');
+                        morningAdvice.textContent = `Morning Probability: ${advice.MorningPrecipProb}% - ${advice.MorningUmbrella}`;
+
+                        const afternoonAdvice = document.createElement('p');
+                        afternoonAdvice.textContent = `Afternoon Probability: ${advice.AfternoonPrecipProb}% - ${advice.AfternoonUmbrella}`;
+
+                        const eveningAdvice = document.createElement('p');
+                        eveningAdvice.textContent = `Evening Probability: ${advice.EveningPrecipProb}% - ${advice.EveningUmbrella}`;
+
+                        adviceCard.appendChild(datePara);
+                        adviceCard.appendChild(morningAdvice);
+                        adviceCard.appendChild(afternoonAdvice);
+                        adviceCard.appendChild(eveningAdvice);
+
+                        resultsDiv.appendChild(adviceCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    document.getElementById('results').textContent = `Error: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+</html>

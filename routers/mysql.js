@@ -90,6 +90,36 @@ router.get('/meteoradvice', async (req, res) => {
   }
 });
 
+router.get('/umbrellaadvice', async (req, res) => {
+  const { zipcode, date } = req.query;
+
+  if (!zipcode || !date) {
+    return res.status(400).json({ message: "Please provide both a zipcode and date parameter." });
+  }
+
+  try {
+    // Load SQL query from file
+    const sqlFilePath = path.join(__dirname, '..', 'mysql', 'sql', 'Q2.sql');
+    const sqlQuery = await fs.readFile(sqlFilePath, 'utf8');
+
+    // Execute SQL query with provided parameters
+    const [results] = await pool.execute(sqlQuery, [zipcode, date]);
+
+    // Format date in results, if necessary
+    results.forEach(result => {
+      if (result.Date instanceof Date) {
+        result.Date = result.Date.toISOString().split('T')[0];
+      }
+    });
+
+    // Send response with results
+    res.json(results);
+  } catch (err) {
+    console.error('Error executing Q2 query:', err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 
 
 module.exports = router
