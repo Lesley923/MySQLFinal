@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" href="advice.css">
+</head>
+<body>
+    <h1>Check Weather Forecast</h1>
+    <form id="forecastForm">
+        <label for="zipcode">Zipcode:</label>
+        <input type="text" id="zipcode" name="zipcode" required><br><br>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br><br>
+        
+        <button type="submit">Get Forecast</button>
+    </form>
+
+    <div id="forecastResults"></div>
+
+    <script>
+        document.getElementById('forecastForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+        
+            const zipcode = document.getElementById('zipcode').value;
+            const date = document.getElementById('date').value;
+        
+            fetch(`/mysql/advice?zipcode=${zipcode}&date=${date}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const resultsDiv = document.getElementById('forecastResults');
+                    resultsDiv.innerHTML = ''; 
+                    const readableNames = {
+                        "date": "Date",
+                        "sunrise": "Sunrise",
+                        "sunset": "Sunset",
+                        "average_cloud_cover": "Cloud Cover",
+                        "cloud_cover_category": "Cloud Cover Category",
+                        "average_visibility": "Visibility",
+                        "visibility_category": "Visibility Category",
+    
+                        "watching_possibility": "Watching Possibility",
+                        "average_feels_like": "Feels Like",
+                        "max_wind_gust": "Max Wind Gust",
+                        "feels_like_category": "Feels Like Category",
+                        "wind_gust_category": "Wind Gust Category"
+                    };
+        
+
+                    const createListFromResults = (result, title) => {
+                        const header = document.createElement('h3');
+                        header.textContent = title;
+                        resultsDiv.appendChild(header);
+        
+                        const list = document.createElement('ul');
+                        Object.entries(result).forEach(([key, value]) => {
+                            const listItem = document.createElement('li');
+                            const readableKey = readableNames[key] || key; 
+                            listItem.textContent = `${readableKey}: ${value}`;
+                            list.appendChild(listItem);
+                        });
+                        resultsDiv.appendChild(list);
+                    };
+                    if (data.results1) createListFromResults(data.results1[0], 'Sunrise Viewing Advice');
+                    if (data.results2) createListFromResults(data.results2[0], 'Sunset Viewing Advice');
+                    if (data.results3) createListFromResults(data.results3[0], 'Outdoor Activity Advice');
+                })
+                .catch(error => {
+                    console.error('Error fetching forecast data:', error);
+                    document.getElementById('forecastResults').innerHTML = `<p>Error: ${error.message}</p>`;
+                });
+        });
+        </script>
+        
+        
+    
+</body>
+</html>

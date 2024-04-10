@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meteor Shower Advice</title>
+    <link rel="stylesheet" href="advice.css"> 
+</head>
+<body>
+    <h1>Meteor Shower Observation Advice</h1>
+    <form id="adviceForm">
+        <label for="dateInput">Select a Date:</label>
+        <input type="date" id="dateInput" name="date" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('adviceForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            const date = document.getElementById('dateInput').value;
+            fetch(`/mysql/meteoradvice?date=${date}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = ''; 
+                    const result = data[0];
+                    const list = document.createElement('ul');
+                    Object.entries(result).forEach(([key, value]) => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${key}: ${value}`;
+                        list.appendChild(listItem);
+                    });
+
+                    resultsDiv.appendChild(list);
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    document.getElementById('results').textContent = `Error: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+</html>
